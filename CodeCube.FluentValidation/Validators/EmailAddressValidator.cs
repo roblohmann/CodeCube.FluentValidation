@@ -14,7 +14,7 @@ namespace CodeCube.FluentValidation.Validators
 
         protected override bool IsValid(PropertyValidatorContext context)
         {
-            if (!IsMandatory) return true;
+            if (!IsMandatory && context.PropertyValue == null) return true;
 
             var emailAddress = context.PropertyValue as string;
             if (string.IsNullOrWhiteSpace(emailAddress)) return false;
