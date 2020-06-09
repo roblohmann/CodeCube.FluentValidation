@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CodeCube.FluentValidation
 {
-    public static class CustomValidators
+    public static class ValidatorExtensions
     {
         public static IRuleBuilder<T, string> IsValidBSN<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
