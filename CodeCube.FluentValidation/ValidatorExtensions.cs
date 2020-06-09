@@ -19,6 +19,12 @@ namespace CodeCube.FluentValidation
         public static IRuleBuilder<T, string> IsValidEmail<T>(this IRuleBuilder<T, string> ruleBuilder, bool isMandatory)
         {
             return ruleBuilder.SetValidator(new EmailAddressValidator<T>(isMandatory));
-        
+
+        }
+
+        public static IRuleBuilder<T, string> IsValidString<T>(this IRuleBuilder<T, string> ruleBuilder, bool isHtmlAllowed)
+        {
+            return ruleBuilder.SetValidator(new HtmlValidator<T>(isHtmlAllowed));
+        }
     }
 }
