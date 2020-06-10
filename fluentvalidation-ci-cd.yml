@@ -3,6 +3,8 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+name: $(Build.Version.Major).$(Build.Version.Minor).$(Date:yy)$(DayOfYear)$(Rev:.r)-preview1
+
 trigger:
   batch: true
   branches:
@@ -14,6 +16,11 @@ pool:
 
 stages:
   - stage: "CI Build"
+    jobs:
+      - job: CI_Build
+        steps:
+
+        
 
   - stage: "CD NuGet"
     dependsOn: "CI Build"
