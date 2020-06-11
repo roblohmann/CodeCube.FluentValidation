@@ -15,9 +15,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: "CI_Build"
+  - stage: "Build Project"
     jobs:
-      - job: CI_Build
+      - job: 'CI_Build'
         steps:
         - task: Assembly-Info-NetCore@2
           displayName: 'Set assembly version'
@@ -77,10 +77,10 @@ stages:
             publishLocation: 'Container'
         
 
-  - stage: "CD_NuGet"
+  - stage: "Publish NuGet"
     dependsOn: "CI_Build"
     jobs:
-    - job:
+    - job: 'CD_NuGet'
       steps:
         - task: NuGetCommand@2
           displayName: 'Push NuGet Package'
