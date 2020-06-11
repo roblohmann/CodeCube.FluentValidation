@@ -3,13 +3,13 @@ using FluentValidation.Validators;
 
 namespace CodeCube.FluentValidation.Validators
 {
-    public class HtmlValidator<T> : PropertyValidator
+    public class HtmlValidator : PropertyValidator
     {
-        private readonly bool IsHtmlAllowed;
+        private readonly bool _allowSanitizedHtml;
 
-        public HtmlValidator(bool isHtmlAllowed = false) : base(ErrorConstants.EN.InvalidValue)
+        public HtmlValidator(bool allowSanitizedHtml = false) : base(ErrorConstants.EN.InvalidValue)
         {
-            IsHtmlAllowed = isHtmlAllowed;
+            _allowSanitizedHtml = allowSanitizedHtml;
         }
 
         protected override bool IsValid(PropertyValidatorContext context)
@@ -20,7 +20,7 @@ namespace CodeCube.FluentValidation.Validators
             if (string.IsNullOrWhiteSpace(potentialyHtmlValue)) return true;
 
             bool containsHtml = Regex.IsMatch(potentialyHtmlValue, @"<[^>]*?>");
-            return containsHtml && IsHtmlAllowed;
+            return containsHtml && _allowSanitizedHtml;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FluentValidation.Validators;
+﻿using CodeCube.Core.Helpers;
+using FluentValidation.Validators;
 
 namespace CodeCube.FluentValidation.Validators
 {
