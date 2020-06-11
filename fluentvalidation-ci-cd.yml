@@ -15,7 +15,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: "CI Build"
+  - stage: "CI_Build"
     jobs:
       - job: CI_Build
         steps:
@@ -71,7 +71,7 @@ stages:
             publishLocation: 'Container'
         
 
-  - stage: "CD NuGet"
+  - stage: "CD_NuGet"
     dependsOn: "CI Build"
     jobs:
     - job:
