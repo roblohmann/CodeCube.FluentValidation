@@ -72,7 +72,7 @@ stages:
         
 
   - stage: "CD_NuGet"
-    dependsOn: "CI Build"
+    dependsOn: "CI_Build"
     jobs:
     - job:
       steps:
