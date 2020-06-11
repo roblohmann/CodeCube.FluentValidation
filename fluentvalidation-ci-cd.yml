@@ -19,8 +19,66 @@ stages:
     jobs:
       - job: CI_Build
         steps:
+        - task: Assembly-Info-NetCore@2
+          inputs:
+            Path: '$(Build.SourcesDirectory)'
+            FileNames: '**/*.csproj'
+            InsertAttributes: false
+            FileEncoding: 'auto'
+            WriteBOM: false
+            PackageId: 'CodeCube.FluentValidation'
+            Authors: 'Rob Lohmann'
+            Company: 'Rob Lohmann'
+            Copyright: 'Copyright 2020 - Rob Lohmann'
+            VersionNumber: '$(Build.BuildNumber)'
+            FileVersionNumber: '$(Build.BuildNumber)'
+            InformationalVersion: '$(Build.BuildNumber)'
+            PackageVersion: '$(Build.BuildNumber)'
+            LogLevel: 'verbose'
+            FailOnWarning: false
+            DisableTelemetry: false
 
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'restore'
+            projects: '**/*.csproj'
+            feedsToUse: 'select'
+
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'build'
+            projects: '**/*.csproj'
+            arguments: '-c Release'
+
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'test'
+            projects: |
+              **/*.Test.csproj
+              **/*.Tests.csproj
+            arguments: '-c Release'
+
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'pack'
+            packagesToPack: '**/*.csproj'
+            versioningScheme: 'byBuildNumber'
+        
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
         
 
   - stage: "CD NuGet"
     dependsOn: "CI Build"
+    jobs:
+    - job:
+      steps:
+      - task: NuGetCommand@2
+        inputs:
+          command: 'push'
+          packagesToPush: '$(System.DefaultWorkingDirectory)/CodeCube.FluentValidation/drop/*.nupkg'
+          nuGetFeedType: 'external'
+          publishFeedCredentials: 'nuget.org'
