@@ -20,6 +20,7 @@ stages:
       - job: CI_Build
         steps:
         - task: Assembly-Info-NetCore@2
+          displayName: 'Set assembly version'
           inputs:
             Path: '$(Build.SourcesDirectory)'
             FileNames: '**/*.csproj'
@@ -39,18 +40,21 @@ stages:
             DisableTelemetry: false
 
         - task: DotNetCoreCLI@2
+          displayName: 'Restore NuGet Packages'
           inputs:
             command: 'restore'
             projects: '**/*.csproj'
             feedsToUse: 'select'
 
         - task: DotNetCoreCLI@2
+          displayName: 'Build Project'
           inputs:
             command: 'build'
             projects: '**/*.csproj'
             arguments: '-c Release'
 
         - task: DotNetCoreCLI@2
+          displayName: 'Run Unit Tests'
           inputs:
             command: 'test'
             projects: |
@@ -59,12 +63,14 @@ stages:
             arguments: '-c Release'
 
         - task: DotNetCoreCLI@2
+          displayName: 'NuGet Pack'
           inputs:
             command: 'pack'
             packagesToPack: '**/*.csproj'
             versioningScheme: 'byBuildNumber'
         
         - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifact'
           inputs:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'drop'
@@ -76,9 +82,10 @@ stages:
     jobs:
     - job:
       steps:
-      - task: NuGetCommand@2
-        inputs:
-          command: 'push'
-          packagesToPush: '$(System.DefaultWorkingDirectory)/CodeCube.FluentValidation/drop/*.nupkg'
-          nuGetFeedType: 'external'
-          publishFeedCredentials: 'nuget.org'
+        - task: NuGetCommand@2
+          displayName: 'Push NuGet Package'
+          inputs:
+            command: 'push'
+            packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+            nuGetFeedType: 'external'
+            publishFeedCredentials: 'nuget.org'
