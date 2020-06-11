@@ -11,6 +11,10 @@ trigger:
     include:
     - master
 
+variables:
+- name : 'system.debug'
+  value: 'true'
+
 pool:
   vmImage: 'ubuntu-latest'
 
