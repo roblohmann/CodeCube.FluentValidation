@@ -3,7 +3,7 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-name: $(Build.Version.Major).$(Build.Version.Minor).$(Date:yy)$(DayOfYear)$(Rev:.r)-preview1
+name: $(Version.Major).$(Version.Minor).$(Rev:.r)
 
 trigger:
   batch: true
