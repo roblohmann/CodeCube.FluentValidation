@@ -23,6 +23,13 @@ stages:
     jobs:
       - job: 'CI_Build'
         steps:
+        
+        - task: UseDotNet@2
+          displayName: 'Install .NET 9.x'
+          inputs:
+            packageType: 'sdk'
+            version: '9.x'
+
         - task: Assembly-Info-NetCore@2
           displayName: 'Set assembly version'
           inputs:
