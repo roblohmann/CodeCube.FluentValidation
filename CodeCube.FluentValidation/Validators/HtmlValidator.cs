@@ -1,26 +1,30 @@
 ﻿using System.Text.RegularExpressions;
+using FluentValidation;
 using FluentValidation.Validators;
 
 namespace CodeCube.FluentValidation.Validators
 {
-    public class HtmlValidator : PropertyValidator
+    public class HtmlValidator<T> : PropertyValidator<T, string>
     {
         private readonly bool _allowSanitizedHtml;
 
-        public HtmlValidator(bool allowSanitizedHtml = false) : base(ErrorConstants.EN.InvalidValue)
+        public HtmlValidator(bool allowSanitizedHtml = false)
         {
             _allowSanitizedHtml = allowSanitizedHtml;
         }
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        public override string Name => "HtmlValidator";
+
+        protected override string GetDefaultMessageTemplate(string errorCode)
+            => ErrorConstants.EN.InvalidValue;
+
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
-            if (context.PropertyValue == null) return true;
+            if (string.IsNullOrWhiteSpace(value))
+                return true;
 
-            var potentialyHtmlValue = context.PropertyValue as string;
-            if (string.IsNullOrWhiteSpace(potentialyHtmlValue)) return true;
-
-            bool containsHtml = Regex.IsMatch(potentialyHtmlValue, @"<[^>]*?>");
-            return containsHtml && _allowSanitizedHtml;
+            bool containsHtml = Regex.IsMatch(value, @"<[^>]*?>");
+            return !containsHtml || _allowSanitizedHtml;
         }
     }
 }

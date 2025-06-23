@@ -1,22 +1,21 @@
 ﻿using CodeCube.Core.Helpers;
+using FluentValidation;
 using FluentValidation.Validators;
 
 namespace CodeCube.FluentValidation.Validators
 {
-    public class BSNValidator<T> : PropertyValidator
+    public class BSNValidator<T> : PropertyValidator<T, string>
     {
+        public override string Name => "BSNValidator";
 
-        public BSNValidator() : base(ErrorConstants.NL.OngeldigBSN)
+        protected override string GetDefaultMessageTemplate(string errorCode)
+            => ErrorConstants.NL.OngeldigBSN;
+
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
-        }
-
-        protected override bool IsValid(PropertyValidatorContext context)
-        {
-            var bsn = context.PropertyValue as string;
-
-            if (!string.IsNullOrWhiteSpace(bsn))
+            if (!string.IsNullOrWhiteSpace(value))
             {
-                return BSNHelper.Elfproef(bsn);
+                return BSNHelper.Elfproef(value);
             }
 
             return false;

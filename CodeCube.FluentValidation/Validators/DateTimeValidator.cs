@@ -1,23 +1,22 @@
 ﻿using System;
+using FluentValidation;
 using FluentValidation.Validators;
 
 namespace CodeCube.FluentValidation.Validators
 {
-    public class DateTimeValidator<T> : PropertyValidator
+    public class DateTimeValidator<T> : PropertyValidator<T, string>
     {
+        public override string Name => "DateTimeValidator";
 
-        public DateTimeValidator() : base(ErrorConstants.EN.InvalidDate)
+        protected override string GetDefaultMessageTemplate(string errorCode)
+            => ErrorConstants.EN.InvalidDate;
+
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
-        }
+            if (string.IsNullOrWhiteSpace(value))
+                return false;
 
-        protected override bool IsValid(PropertyValidatorContext context)
-        {
-            if (context.PropertyValue == null) return false;
-            var datetimeAsString = context.PropertyValue as string;
-            
-            if (string.IsNullOrWhiteSpace(datetimeAsString)) return false;
-
-            return DateTime.TryParse(datetimeAsString, out DateTime theDateTime) && theDateTime > DateTime.MinValue;
+            return DateTime.TryParse(value, out var theDateTime) && theDateTime > DateTime.MinValue;
         }
     }
 }

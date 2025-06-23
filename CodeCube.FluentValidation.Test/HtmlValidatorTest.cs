@@ -1,6 +1,7 @@
 using CodeCube.FluentValidation.Validators;
 using FluentValidation;
 using FluentValidation.Internal;
+using FluentValidation.TestHelper;
 using FluentValidation.Validators;
 using Xunit;
 
@@ -8,7 +9,16 @@ namespace CodeCube.FluentValidation.Test
 {
     public class FluentValidatorTestObject
     {
-        public object Value { get; set; }
+        public string Value { get; set; }
+    }
+
+// Wrapper-validator om onze custom HtmlValidator te testen
+    public class TestHtmlValidator : AbstractValidator<FluentValidatorTestObject>
+    {
+        public TestHtmlValidator(bool allowSanitizedHtml)
+        {
+            RuleFor(x => x.Value).SetValidator(new HtmlValidator<FluentValidatorTestObject>(allowSanitizedHtml));
+        }
     }
 
     public class HtmlValidatorTest
@@ -16,58 +26,34 @@ namespace CodeCube.FluentValidation.Test
         [Fact]
         public void StringWithHtml_ShouldReturnError_HtmlDisallowed()
         {
-            //Setup
-            const bool allowSanitizedHtml = false;
-            var validator = new HtmlValidator(allowSanitizedHtml);
-            var fluentValidatorTestObject = new FluentValidatorTestObject { Value = "Dit is een <b>test</b>" };
+            var validator = new TestHtmlValidator(allowSanitizedHtml: false);
+            var testObject = new FluentValidatorTestObject { Value = "Dit is een <b>test</b>" };
 
-            var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
-            var context = new ValidationContext(fluentValidatorTestObject, new PropertyChain(), selector);
-            var propertyValidatorContext = new PropertyValidatorContext(context, PropertyRule.Create<FluentValidatorTestObject, string>(t => t.Value.ToString()), "Value");
+            var result = validator.TestValidate(testObject);
 
-            //Act
-            var results = validator.Validate(propertyValidatorContext);
-
-            //Assert
-            Assert.NotEmpty(results);
+            result.ShouldHaveValidationErrorFor(x => x.Value);
         }
 
         [Fact]
         public void StringWithJavascript_ShouldReturnError_HtmlDisallowed()
         {
-            //Setup
-            const bool allowSanitizedHtml = false;
-            var validator = new HtmlValidator(allowSanitizedHtml);
-            var fluentValidatorTestObject = new FluentValidatorTestObject { Value = "Dit is een stukje javascript: '><script>alert('hoi');</script>" };
+            var validator = new TestHtmlValidator(allowSanitizedHtml: false);
+            var testObject = new FluentValidatorTestObject { Value = "Dit is een stukje javascript: '><script>alert('hoi');</script>" };
 
-            var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
-            var context = new ValidationContext(fluentValidatorTestObject, new PropertyChain(), selector);
-            var propertyValidatorContext = new PropertyValidatorContext(context, PropertyRule.Create<FluentValidatorTestObject, string>(t => t.Value.ToString()), "Value");
+            var result = validator.TestValidate(testObject);
 
-            //Act
-            var results = validator.Validate(propertyValidatorContext);
-
-            //Assert
-            Assert.NotEmpty(results);
+            result.ShouldHaveValidationErrorFor(x => x.Value);
         }
 
         [Fact]
-        public void StringWithHtml_ShouldReturnError_HtmlAllowed()
+        public void StringWithHtml_ShouldNotReturnError_HtmlAllowed()
         {
-            //Setup
-            const bool allowSanitizedHtml = true;
-            var validator = new HtmlValidator(allowSanitizedHtml);
-            var fluentValidatorTestObject = new FluentValidatorTestObject { Value = "Dit is een <b>test</b>" };
+            var validator = new TestHtmlValidator(allowSanitizedHtml: true);
+            var testObject = new FluentValidatorTestObject { Value = "Dit is een <b>test</b>" };
 
-            var selector = ValidatorOptions.ValidatorSelectors.DefaultValidatorSelectorFactory();
-            var context = new ValidationContext(fluentValidatorTestObject, new PropertyChain(), selector);
-            var propertyValidatorContext = new PropertyValidatorContext(context, PropertyRule.Create<FluentValidatorTestObject, string>(t => t.Value.ToString()), "Value");
+            var result = validator.TestValidate(testObject);
 
-            //Act
-            var results = validator.Validate(propertyValidatorContext);
-
-            //Assert
-            Assert.Empty(results);
+            result.ShouldNotHaveValidationErrorFor(x => x.Value);
         }
     }
 }
