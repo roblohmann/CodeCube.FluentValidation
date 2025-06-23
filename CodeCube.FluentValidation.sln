@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeCube.FluentValidation",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{81AC6977-248A-434F-82C2-C9B100F1125D}"
 	ProjectSection(SolutionItems) = preProject
-		nuget-icon.png = nuget-icon.png
+		CodeCube.FluentValidation\nuget-icon.png = CodeCube.FluentValidation\nuget-icon.png
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeCube.FluentValidation.Test", "CodeCube.FluentValidation.Test\CodeCube.FluentValidation.Test.csproj", "{2D37BCA1-8CC1-45C2-8D9C-27201056AC52}"

@@ -7,7 +7,7 @@
     <Description>Small set with usesfull extension methods to use with FluentValidation</Description>
     <Copyright>Copyright Rob Lohmann 2019 - 2025</Copyright>
     <PackageProjectUrl>https://github.com/roblohmann/CodeCube.FluentValidation</PackageProjectUrl>
-    <PackageIcon>..\nuget-icon.png</PackageIcon>
+    <PackageIcon>nuget-icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/roblohmann/CodeCube.FluentValidation</RepositoryUrl>
     <PackageTags>codecube codecube.fluentvalidation fluentvalidation</PackageTags>
   </PropertyGroup>
@@ -16,6 +16,10 @@
     <PackageReference Include="CodeCube.Core" Version="4.0.5" />
     <PackageReference Include="FluentValidation" Version="12.0.0" Condition="'$(TargetFramework)' == 'net9.0'"/>
     <PackageReference Include="FluentValidation" Version="11.11.0" Condition="'$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0' Or '$(TargetFramework)' == 'net8.0'" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="nuget-icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
