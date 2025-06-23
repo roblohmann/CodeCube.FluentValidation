@@ -34,7 +34,7 @@ stages:
             PackageId: 'CodeCube.FluentValidation'
             Authors: 'Rob Lohmann'
             Company: 'Rob Lohmann'
-            Copyright: 'Copyright 2020 - Rob Lohmann'
+            Copyright: 'Copyright Rob Lohmann 2019 - 2025'
             VersionNumber: '$(Build.BuildNumber)'
             FileVersionNumber: '$(Build.BuildNumber)'
             InformationalVersion: '$(Build.BuildNumber)'
