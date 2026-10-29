@@ -6,7 +6,7 @@
     <Product>CodeCube.FluentValidation</Product>
     <PackageId>CodeCube.FluentValidation</PackageId>
     <Description>Small set with usesfull extension methods to use with FluentValidation</Description>
-    <Copyright>Copyright Rob Lohmann 2019 - 2025</Copyright>
+    <Copyright>Copyright Rob Lohmann 2019 - 2026</Copyright>
     <PackageProjectUrl>https://github.com/roblohmann/CodeCube.FluentValidation</PackageProjectUrl>
     <PackageIcon>nuget-icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/roblohmann/CodeCube.FluentValidation</RepositoryUrl>
