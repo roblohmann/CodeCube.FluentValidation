@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Product>CodeCube.FluentValidation</Product>
     <PackageId>CodeCube.FluentValidation</PackageId>
     <Description>Small set with usesfull extension methods to use with FluentValidation</Description>
