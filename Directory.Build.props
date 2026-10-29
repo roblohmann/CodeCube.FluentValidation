@@ -7,6 +7,7 @@
     <PackageProjectUrl>https://github.com/roblohmann/CodeCube.FluentValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/roblohmann/CodeCube.FluentValidation</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <VersionPrefix>3.1.17</VersionPrefix>
   </PropertyGroup>
 
 </Project>
